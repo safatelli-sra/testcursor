@@ -1,0 +1,23 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">Admin</div>
+    <nav>
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="search">
+        <input placeholder="Search..." />
+      </div>
+      <div class="actions">
+        <button type="button">Notifications</button>
+        <button type="button">Profile</button>
+      </div>
+    </header>
+    <section class="content">
+      <router-outlet />
+    </section>
+  </div>
+  
+</div>

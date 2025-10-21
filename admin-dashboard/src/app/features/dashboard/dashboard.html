@@ -1,0 +1,91 @@
+<div class="dashboard">
+  <div class="cards">
+    <div class="card">
+      <div class="label">Total Revenue</div>
+      <div class="value">$128,950</div>
+      <div class="delta up">+12.4%</div>
+    </div>
+    <div class="card">
+      <div class="label">Active Users</div>
+      <div class="value">8,421</div>
+      <div class="delta up">+4.1%</div>
+    </div>
+    <div class="card">
+      <div class="label">Orders</div>
+      <div class="value">1,289</div>
+      <div class="delta down">-1.8%</div>
+    </div>
+    <div class="card">
+      <div class="label">Conversion</div>
+      <div class="value">3.21%</div>
+      <div class="delta up">+0.3%</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-title">Revenue vs Expenses</div>
+      <apx-chart [series]="areaSeries"
+                 [chart]="areaChart"
+                 [xaxis]="areaXaxis"
+                 [dataLabels]="areaDataLabels"
+                 [stroke]="areaStroke"
+                 [fill]="areaFill"
+                 [grid]="areaGrid"
+                 [theme]="areaTheme"
+                 [colors]="areaColors"></apx-chart>
+    </div>
+    <div class="panel">
+      <div class="panel-title">New Users</div>
+      <apx-chart [series]="barSeries"
+                 [chart]="barChart"
+                 [xaxis]="barXaxis"
+                 [plotOptions]="barPlotOptions"
+                 [grid]="barGrid"
+                 [theme]="barTheme"
+                 [colors]="barColors"></apx-chart>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Goal</div>
+      <apx-chart [series]="radialSeries"
+                 [chart]="radialChart"
+                 [labels]="radialLabels"
+                 [theme]="radialTheme"
+                 [colors]="radialColors"></apx-chart>
+    </div>
+  </div>
+
+  <div class="panel table">
+    <div class="panel-title">Recent Orders</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Customer</th>
+          <th>Status</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#10234</td>
+          <td>Jane Cooper</td>
+          <td><span class="status success">Paid</span></td>
+          <td>$320.00</td>
+        </tr>
+        <tr>
+          <td>#10233</td>
+          <td>Jacob Jones</td>
+          <td><span class="status warning">Pending</span></td>
+          <td>$140.50</td>
+        </tr>
+        <tr>
+          <td>#10232</td>
+          <td>Theresa Webb</td>
+          <td><span class="status error">Refunded</span></td>
+          <td>$89.99</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
