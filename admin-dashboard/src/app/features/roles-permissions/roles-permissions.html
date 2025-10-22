@@ -1,0 +1,139 @@
+<div class="roles-permissions">
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-title">Utilisateurs</div>
+      <div class="toolbar">
+        <button type="button" (click)="startCreateUser()">Ajouter</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of data.users(); track trackById($index, u)) {
+            <tr>
+              <td>{{ u.fullName }}</td>
+              <td>{{ u.email }}</td>
+              <td>{{ (u.roleId ? (data.roleIdToRole().get(u.roleId)?.name ?? '—') : '—') }}</td>
+              <td>
+                <button type="button" (click)="startEditUser(u)">Modifier</button>
+                <button type="button" (click)="deleteUser(u)">Supprimer</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      @if (isCreatingUser() || editingUserId()) {
+        <div class="form-card">
+          <form [formGroup]="userForm" (ngSubmit)="saveUser()">
+            <div class="row">
+              <label>Nom complet</label>
+              <input type="text" formControlName="fullName" required minlength="3" maxlength="60" />
+            </div>
+            <div class="row">
+              <label>Email</label>
+              <input type="email" formControlName="email" required maxlength="120" />
+            </div>
+            <div class="row">
+              <label>Rôle</label>
+              <select formControlName="roleId">
+                <option [ngValue]="null">—</option>
+                @for (r of data.roles(); track trackById($index, r)) {
+                  <option [ngValue]="r.id">{{ r.name }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="row">
+              <label>Permissions supplémentaires</label>
+              <div class="checkboxes">
+                @for (p of data.permissions(); track p.id) {
+                  <label class="checkbox">
+                    <input type="checkbox"
+                           [checked]="isUserExtraPermChecked(p.id)"
+                           (change)="toggleUserExtraPerm(p.id)" />
+                    {{ p.label }}
+                  </label>
+                }
+              </div>
+            </div>
+
+            <div class="actions">
+              <button type="submit" [disabled]="userForm.invalid">Enregistrer</button>
+              <button type="button" (click)="cancelUser()">Annuler</button>
+            </div>
+          </form>
+        </div>
+      }
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Rôles</div>
+      <div class="toolbar">
+        <button type="button" (click)="startCreateRole()">Ajouter</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Permissions</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of data.roles(); track trackById($index, r)) {
+            <tr>
+              <td>{{ r.name }}</td>
+              <td>
+                @for (pid of r.permissionIds; track pid) {
+                  <span class="badge">{{ labelForPermissionId(pid) }}</span>
+                }
+              </td>
+              <td>
+                <button type="button" (click)="startEditRole(r)">Modifier</button>
+                <button type="button" (click)="deleteRole(r)">Supprimer</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      @if (isCreatingRole() || editingRoleId()) {
+        <div class="form-card">
+          <form [formGroup]="roleForm" (ngSubmit)="saveRole()">
+            <div class="row">
+              <label>Nom du rôle</label>
+              <input type="text" formControlName="name" required minlength="3" maxlength="40" />
+            </div>
+
+            <div class="row">
+              <label>Permissions</label>
+              <div class="checkboxes">
+                @for (p of data.permissions(); track p.id) {
+                  <label class="checkbox">
+                    <input type="checkbox"
+                           [checked]="isRolePermChecked(p.id)"
+                           (change)="toggleRolePerm(p.id)" />
+                    {{ p.label }}
+                  </label>
+                }
+              </div>
+            </div>
+
+            <div class="actions">
+              <button type="submit" [disabled]="roleForm.invalid">Enregistrer</button>
+              <button type="button" (click)="cancelRole()">Annuler</button>
+            </div>
+          </form>
+        </div>
+      }
+    </div>
+  </div>
+</div>

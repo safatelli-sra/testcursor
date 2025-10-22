@@ -1,0 +1,74 @@
+<div class="stores">
+  <div class="panel">
+    <div class="panel-title">Magasins concurrents</div>
+    <div class="toolbar">
+      <button type="button" (click)="startCreate()">Ajouter</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Enseigne</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Adresse</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (s of data.stores(); track s.id) {
+          <tr>
+            <td>{{ s.name }}</td>
+            <td>{{ s.brand }}</td>
+            <td>{{ s.latitude | number:'1.5-5' }}</td>
+            <td>{{ s.longitude | number:'1.5-5' }}</td>
+            <td>{{ s.address || '—' }}</td>
+            <td>
+              <button type="button" (click)="startEdit(s)">Modifier</button>
+              <button type="button" (click)="delete(s)">Supprimer</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    @if (creating || editingId) {
+      <div class="form-card">
+        <form [formGroup]="form" (ngSubmit)="save()">
+          <div class="grid">
+            <div>
+              <div class="row">
+                <label>Nom</label>
+                <input type="text" formControlName="name" required maxlength="80" />
+              </div>
+              <div class="row">
+                <label>Enseigne</label>
+                <input type="text" formControlName="brand" required maxlength="80" />
+              </div>
+              <div class="row">
+                <label>Adresse</label>
+                <input type="text" formControlName="address" maxlength="200" />
+              </div>
+              <div class="row">
+                <label>Latitude</label>
+                <input type="number" step="0.00001" formControlName="latitude" required />
+              </div>
+              <div class="row">
+                <label>Longitude</label>
+                <input type="number" step="0.00001" formControlName="longitude" required />
+              </div>
+              <div class="actions">
+                <button type="submit" [disabled]="form.invalid">Enregistrer</button>
+                <button type="button" (click)="cancel()">Annuler</button>
+              </div>
+            </div>
+            <div>
+              <div #map class="map"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    }
+  </div>
+</div>
