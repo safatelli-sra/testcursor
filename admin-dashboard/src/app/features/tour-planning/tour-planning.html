@@ -1,0 +1,80 @@
+<div class="tours">
+  <div class="panel">
+    <div class="panel-title">Planification des tournées</div>
+    <div class="toolbar">
+      <button type="button" (click)="startCreate()">Ajouter</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Collaborateur</th>
+          <th>Magasin</th>
+          <th>Début</th>
+          <th>Fin</th>
+          <th>Type</th>
+          <th>Rayon</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (t of data.tours(); track t.id) {
+          <tr>
+            <td>{{ t.collaboratorName }}</td>
+            <td>{{ storeName(t.storeId) }}</td>
+            <td>{{ t.startDate }}</td>
+            <td>{{ t.endDate }}</td>
+            <td>{{ t.missionType }}</td>
+            <td>{{ t.department }}</td>
+            <td>
+              <button type="button" (click)="startEdit(t)">Modifier</button>
+              <button type="button" (click)="delete(t)">Supprimer</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    @if (creating || editingId) {
+      <div class="form-card">
+        <form [formGroup]="form" (ngSubmit)="save()">
+          <div class="grid">
+            <div class="row">
+              <label>Nom du collaborateur</label>
+              <input type="text" formControlName="collaboratorName" required minlength="3" maxlength="80" />
+            </div>
+            <div class="row">
+              <label>Magasin</label>
+              <select formControlName="storeId" required>
+                <option [ngValue]="null">—</option>
+                @for (s of data.stores(); track s.id) {
+                  <option [ngValue]="s.id">{{ s.name }} ({{ s.brand }})</option>
+                }
+              </select>
+            </div>
+            <div class="row">
+              <label>Date de début</label>
+              <input type="date" formControlName="startDate" required />
+            </div>
+            <div class="row">
+              <label>Date de fin</label>
+              <input type="date" formControlName="endDate" required />
+            </div>
+            <div class="row">
+              <label>Type de mission</label>
+              <input type="text" formControlName="missionType" required maxlength="60" />
+            </div>
+            <div class="row">
+              <label>Rayon concerné</label>
+              <input type="text" formControlName="department" required maxlength="60" />
+            </div>
+            <div class="actions">
+              <button type="submit" [disabled]="form.invalid">Enregistrer</button>
+              <button type="button" (click)="cancel()">Annuler</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    }
+  </div>
+</div>

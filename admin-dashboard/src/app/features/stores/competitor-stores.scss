@@ -1,0 +1,50 @@
+.stores {
+  .panel {
+    background: #0f1629;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .panel-title { font-weight: 600; margin-bottom: 8px; }
+  .toolbar { margin-bottom: 8px; }
+  .toolbar button, .actions button {
+    background: #5865f2;
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    height: 32px;
+    padding: 0 12px;
+    margin-right: 8px;
+  }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+  th, td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+  .form-card {
+    background: #0b0f1a;
+    border: 1px dashed rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+  }
+  input {
+    background: #0f1629;
+    color: #e6e9f0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    height: 36px;
+    padding: 0 10px;
+  }
+  .map { height: 320px; border-radius: 8px; overflow: hidden; }
+}
