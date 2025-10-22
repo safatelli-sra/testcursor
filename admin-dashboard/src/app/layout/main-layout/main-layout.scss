@@ -1,0 +1,91 @@
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: 64px 1fr;
+  grid-template-areas:
+    "sidebar topbar"
+    "sidebar content";
+  min-height: 100vh;
+  background: #0b0f1a;
+  color: #e6e9f0;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background: #0f1629;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+nav a {
+  display: block;
+  color: #c8d0e0;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+nav a:hover,
+nav a.active {
+  background: rgba(88, 101, 242, 0.12);
+  color: #ffffff;
+}
+
+.main {
+  display: contents;
+}
+
+.topbar {
+  grid-area: topbar;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0b0f1a;
+}
+
+.search input {
+  background: #0f1629;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e6e9f0;
+  border-radius: 8px;
+  height: 36px;
+  padding: 0 12px;
+}
+
+.actions button {
+  background: #5865f2;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  height: 32px;
+  padding: 0 10px;
+  margin-left: 8px;
+}
+
+.content {
+  grid-area: content;
+  padding: 16px;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "topbar"
+      "sidebar"
+      "content";
+  }
+}
