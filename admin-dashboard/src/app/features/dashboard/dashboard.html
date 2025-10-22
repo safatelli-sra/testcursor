@@ -1,30 +1,64 @@
 <div class="dashboard">
+  <!-- Filters -->
+  <div class="filters panel">
+    <div class="panel-title">
+      <lucide-angular name="activity" size="16"></lucide-angular>
+      Filters
+    </div>
+    <div class="filters-grid">
+      <label>
+        Agent
+        <select [(ngModel)]="selectedAgent" (ngModelChange)="onFiltersChange()">
+          <option value="all">All</option>
+          <option *ngFor="let a of agents" [value]="a">{{ a }}</option>
+        </select>
+      </label>
+      <label>
+        Store
+        <select [(ngModel)]="selectedStore" (ngModelChange)="onFiltersChange()">
+          <option value="all">All</option>
+          <option *ngFor="let s of stores" [value]="s">{{ s }}</option>
+        </select>
+      </label>
+      <label>
+        From
+        <input type="date" [(ngModel)]="dateFrom" (ngModelChange)="onFiltersChange()" />
+      </label>
+      <label>
+        To
+        <input type="date" [(ngModel)]="dateTo" (ngModelChange)="onFiltersChange()" />
+      </label>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
   <div class="cards">
     <div class="card">
-      <div class="label">Total Revenue</div>
-      <div class="value">$128,950</div>
-      <div class="delta up">+12.4%</div>
+      <div class="label"><lucide-angular name="activity" size="14"></lucide-angular> Total Scans</div>
+      <div class="value">{{ totalScans() }}</div>
+      <div class="delta up">Agent productivity</div>
     </div>
     <div class="card">
-      <div class="label">Active Users</div>
-      <div class="value">8,421</div>
-      <div class="delta up">+4.1%</div>
+      <div class="label"><lucide-angular name="users" size="14"></lucide-angular> Avg time/article</div>
+      <div class="value">{{ avgTimePerArticle }}s</div>
+      <div class="delta up">Completion {{ completionRate }}%</div>
     </div>
     <div class="card">
-      <div class="label">Orders</div>
-      <div class="value">1,289</div>
-      <div class="delta down">-1.8%</div>
+      <div class="label"><lucide-angular name="trending-up" size="14"></lucide-angular> Avg price diff</div>
+      <div class="value">{{ priceDiffAvg }}%</div>
+      <div class="delta">Promo products {{ promoPercent }}%</div>
     </div>
     <div class="card">
-      <div class="label">Conversion</div>
-      <div class="value">3.21%</div>
-      <div class="delta up">+0.3%</div>
+      <div class="label"><lucide-angular name="info" size="14"></lucide-angular> Data quality</div>
+      <div class="value">Err {{ dataQuality.errorRate }}% / Miss {{ dataQuality.missingCount }}</div>
+      <div class="delta">Last 30 days</div>
     </div>
   </div>
 
   <div class="grid">
+    <!-- Time-based trends: scans and price evolution -->
     <div class="panel">
-      <div class="panel-title">Revenue vs Expenses</div>
+      <div class="panel-title">Trends: Scans & Price Evolution</div>
       <apx-chart [series]="areaSeries"
                  [chart]="areaChart"
                  [xaxis]="areaXaxis"
@@ -35,8 +69,10 @@
                  [theme]="areaTheme"
                  [colors]="areaColors"></apx-chart>
     </div>
+
+    <!-- Store analysis: visits per store -->
     <div class="panel">
-      <div class="panel-title">New Users</div>
+      <div class="panel-title">Store Analysis: Visits per Store</div>
       <apx-chart [series]="barSeries"
                  [chart]="barChart"
                  [xaxis]="barXaxis"
@@ -45,8 +81,10 @@
                  [theme]="barTheme"
                  [colors]="barColors"></apx-chart>
     </div>
+
+    <!-- Completion rate -->
     <div class="panel">
-      <div class="panel-title">Goal</div>
+      <div class="panel-title">Completion Rate</div>
       <apx-chart [series]="radialSeries"
                  [chart]="radialChart"
                  [labels]="radialLabels"
@@ -55,36 +93,62 @@
     </div>
   </div>
 
+  <!-- Extra charts -->
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-title">Promo Share</div>
+      <apx-chart [series]="pieSeries" [chart]="pieChart" [labels]="pieLabels"></apx-chart>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Average Visit Duration</div>
+      <apx-chart [series]="durationSeries"
+                 [chart]="durationChart"
+                 [xaxis]="durationXaxis"
+                 [plotOptions]="durationPlotOptions"
+                 [grid]="durationGrid"
+                 [theme]="durationTheme"
+                 [colors]="durationColors"></apx-chart>
+    </div>
+  </div>
+
+  <!-- Map of stores visited -->
+  <div class="panel">
+    <div class="panel-title"><lucide-angular name="map" size="16"></lucide-angular> Stores Visited</div>
+    <div id="storesMap" style="height: 320px; border-radius: 12px; overflow: hidden"></div>
+  </div>
+
+  <!-- Price analysis table -->
   <div class="panel table">
-    <div class="panel-title">Recent Orders</div>
+    <div class="panel-title">Price Analysis</div>
+    <div class="two-col">
+      <table>
+        <thead>
+        <tr><th>Top Expensive</th><th>Δ</th></tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let r of topExpensive"><td>{{ r.name }}</td><td>{{ r.diff }}</td></tr>
+        </tbody>
+      </table>
+      <table>
+        <thead>
+        <tr><th>Top Cheap</th><th>Δ</th></tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let r of topCheap"><td>{{ r.name }}</td><td>{{ r.diff }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Productivity ranking -->
+  <div class="panel table">
+    <div class="panel-title">Top 5 Agents</div>
     <table>
       <thead>
-        <tr>
-          <th>Order #</th>
-          <th>Customer</th>
-          <th>Status</th>
-          <th>Total</th>
-        </tr>
+      <tr><th>Agent</th><th>Score</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td>#10234</td>
-          <td>Jane Cooper</td>
-          <td><span class="status success">Paid</span></td>
-          <td>$320.00</td>
-        </tr>
-        <tr>
-          <td>#10233</td>
-          <td>Jacob Jones</td>
-          <td><span class="status warning">Pending</span></td>
-          <td>$140.50</td>
-        </tr>
-        <tr>
-          <td>#10232</td>
-          <td>Theresa Webb</td>
-          <td><span class="status error">Refunded</span></td>
-          <td>$89.99</td>
-        </tr>
+      <tr *ngFor="let r of ranking"><td>{{ r.agent }}</td><td>{{ r.score }}</td></tr>
       </tbody>
     </table>
   </div>
