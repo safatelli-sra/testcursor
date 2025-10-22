@@ -149,6 +149,14 @@ export class Dashboard {
       this.durationXaxis = { categories: this.stores };
     });
 
+    this.fetchData();
+  }
+
+  onFiltersChange(): void {
+    this.fetchData();
+  }
+
+  private fetchData(): void {
     this.dataSvc.getDashboardData({
       agent: this.selectedAgent,
       store: this.selectedStore,

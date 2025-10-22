@@ -8,25 +8,25 @@
     <div class="filters-grid">
       <label>
         Agent
-        <select [(ngModel)]="selectedAgent">
+        <select [(ngModel)]="selectedAgent" (ngModelChange)="onFiltersChange()">
           <option value="all">All</option>
           <option *ngFor="let a of agents" [value]="a">{{ a }}</option>
         </select>
       </label>
       <label>
         Store
-        <select [(ngModel)]="selectedStore">
+        <select [(ngModel)]="selectedStore" (ngModelChange)="onFiltersChange()">
           <option value="all">All</option>
           <option *ngFor="let s of stores" [value]="s">{{ s }}</option>
         </select>
       </label>
       <label>
         From
-        <input type="date" [(ngModel)]="dateFrom" />
+        <input type="date" [(ngModel)]="dateFrom" (ngModelChange)="onFiltersChange()" />
       </label>
       <label>
         To
-        <input type="date" [(ngModel)]="dateTo" />
+        <input type="date" [(ngModel)]="dateTo" (ngModelChange)="onFiltersChange()" />
       </label>
     </div>
   </div>
